@@ -4,7 +4,7 @@ import json
 import time
 import subprocess
 
-OUTPUT_BASE_DIR = "neuroelo_web"
+OUTPUT_BASE_DIR = os.path.join("neuroelo_web","vedal-data")
 NUMBER_OF_TOP_SPOTS = 20
 DEBUG = False
 
@@ -29,14 +29,14 @@ def check_dir(dir: str) -> None:
 
 def generate_api():
     ### Load the chat logs into memory
-    chatlist = os.listdir(main.chatpath)
+    chatlist = "/home/hestia/.local/share/chatterino/Logs/Twitch/Channels/vedal987/vedal987-2023-08-13.log"
     chatlog = []
     elolist = {}
-    for file in chatlist:
-        with open(os.path.join(main.chatpath, file)) as f:
-            this = f.readlines()
-        for line in this:
-            chatlog.append(line.strip())
+    elolist = json.load(open("temp_data_holder.json"))
+    with open(chatlist) as f:
+        this = f.readlines()
+    for line in this:
+        chatlog.append(line.strip())
 
     ## time to assign elos
     for message in chatlog:
@@ -45,12 +45,8 @@ def generate_api():
             user, elo_delta = grade
             user = user.capitalize()
             if user in elolist:
-                elolist[user]["elo"] += elo_delta
+                #elolist[user]["elo"] += elo_delta
                 elolist[user]["messages"].append([message, elo_delta])
-            else:
-                elolist[user] = {}
-                elolist[user]["elo"] = elo_delta
-                elolist[user]["messages"] = [[message, elo_delta]]
 
     web_root_dir = os.path.join(current_dir, OUTPUT_BASE_DIR)
     api_dir = os.path.join(current_dir, OUTPUT_BASE_DIR, "api")
@@ -60,7 +56,7 @@ def generate_api():
     check_dir(user_dir)
 
     ranking = {name: data["elo"] for name, data in elolist.items()}
-    ranking = dict(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
+    #ranking = dict(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
     ranking_spot = list(ranking.keys())
 
     for user, data in elolist.items():
