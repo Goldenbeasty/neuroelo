@@ -1,6 +1,7 @@
 module.exports = {
   content: [
     './src/*.{js,html}',
+    './neuroelo_web/vedal-data/*.{js,html}',
   ],
   theme: {
     extend: {
