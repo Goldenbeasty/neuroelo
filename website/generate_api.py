@@ -52,6 +52,7 @@ def generate_api():
                 elolist[user]["elo"] = elo_delta
                 elolist[user]["messages"] = [[message, elo_delta]]
 
+    # Check and create the directories
     web_root_dir = os.path.join(current_dir, OUTPUT_BASE_DIR)
     api_dir = os.path.join(current_dir, OUTPUT_BASE_DIR, "api")
     user_dir = os.path.join(api_dir, "user")
@@ -59,10 +60,12 @@ def generate_api():
     check_dir(api_dir)
     check_dir(user_dir)
 
+    # Create the dataset for the ranking table
     ranking = {name: data["elo"] for name, data in elolist.items()}
     ranking = dict(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
     ranking_spot = list(ranking.keys())
 
+    # Create the /api/user/{username} data
     for user, data in elolist.items():
         data["messages"] = sorted(data["messages"], key=lambda item: item [1], reverse=True)
         data["ranking"] = ranking_spot.index(user) + 1
@@ -71,13 +74,15 @@ def generate_api():
             continue
         json.dump(data, open(os.path.join(user_dir, user), "w"))
 
-    #elolist = {name: data["elo"] for name, data in elolist.items()}
-    #elolist = dict(sorted(elolist.items(), key=lambda item: item[1], reverse=True))
+    # Dump the ranking table dataset
     elolist = ranking
     json.dump(elolist, open(os.path.join(api_dir, "user_list"), "w"))
 
+    # And grab the top NUMBER_OF_TOP_SPORTS of the ranking table
     toplist = dict(list(elolist.items())[:NUMBER_OF_TOP_SPOTS])
     json.dump(toplist, open(os.path.join(api_dir, "top_list"), "w"))
+
+    # Create the info data for the website
     commit_hash = get_git_commit_hash()
     if commit_hash:
         print("Current commit hash:", commit_hash)
@@ -92,9 +97,7 @@ def generate_api():
         "git hash": commit_hash
     }
     json.dump(sysinfo, open(os.path.join(api_dir, "info"), "w"))
-
-    
-
+    json.dump(chatlist, open(os.path.join(api_dir, "log_list"), "w"))
 
 if __name__ == "__main__":
     generate_api()
