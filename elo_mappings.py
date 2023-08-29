@@ -3,8 +3,8 @@ elo_mappings = [
         "name": "stdmessage token",
         "elo_award": 2,
         "re": [
-            r"^\[\d{2}:\d{2}:\d{2}\]  (\w*): (.*)$",
-            r"^\[\d{2}:\d{2}:\d{2}\] (\S* \S*): (.*)$"]
+            r"^\[\d{2}:\d{2}:\d{2}\]  (\w+): (.*)$", 
+            r"^\[\d{2}:\d{2}:\d{2}\] (\S+ \S+): (.*)$"]
     },
     {
         "name": "Gifted sub",
@@ -25,10 +25,10 @@ elo_mappings = [
         "elo_award": None,
         "re": [
             r"^# Start logging at \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \S*$",
-            r"^\[\d{2}:\d{2}:\d{2}] connected$",
+            r"^\[\d{2}:\d{2}:\d{2}\] connected$",
             r"^\[\d{2}:\d{2}:\d{2}\] disconnected$",
-            r"\[\d{2}:\d{2}:\d{2}\] (\S*) is live!$",
-            r"\[\d{2}:\d{2}:\d{2}\] \S* gifted a Tier [123] sub to \S*! They have given \d* Gift Subs in the channel!$",
+            r"^\[\d{2}:\d{2}:\d{2}\] (\S*) is live!$",
+            r"^\[\d{2}:\d{2}:\d{2}\] \S* gifted a Tier [123] sub to \S*! They have given \d* Gift Subs in the channel!$",
             r"^\[\d{2}:\d{2}:\d{2}\] [MTWFS][a-z]*, \d{1,2} [JFMASOND][a-z]* \d{4}$",
             r"^\[\d{2}:\d{2}:\d{2}\] Server connection timed out, reconnecting$",
             r"^\[\d{2}:\d{2}:\d{2}\] (?:Twitch subscriber|BetterTTV channel|7TV channel) emotes reloaded\.$",
